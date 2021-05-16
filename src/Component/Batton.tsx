@@ -1,16 +1,18 @@
 import React from 'react';
 
 type PropsType = {
-   title: string
-    onHandler: () => void
-    disabled: boolean | undefined
+    title: string
+    onClickHandler: () => void
+    disabled: boolean
 }
 
-export function Batton (props: PropsType) {
+export function Batton(props: PropsType) {
 
     return (
-        <div className="button">
-            <button className="button" onClick={props.onHandler} disabled={props.disabled}>{props.title}</button>
+        <div>
+            <button className="button"
+                    onClick={props.onClickHandler}
+                    disabled={props.disabled}>{props.title}</button>
         </div>
     );
 }
