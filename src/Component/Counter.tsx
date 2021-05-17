@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Batton} from "./Batton";
 
 type PropsType = {
@@ -14,10 +14,8 @@ type PropsType = {
 
 export function Counter(props: PropsType) {
 
-
     const onIncHandler = () => props.increaseInc(props.maxValue)
     const onResetHandler = () => props.setInNumMinValue(props.minValue)
-
 
     return (
         <div className="counter">
@@ -28,8 +26,8 @@ export function Counter(props: PropsType) {
 
             </div>
             <div className="buttons">
-                <Batton title={'inc'} onClickHandler={onIncHandler} disabled={props.num === props.maxValue}/>
-                <Batton title={'reset'} onClickHandler={onResetHandler} disabled={props.num === props.minValue}/>
+                <Batton title={'inc'} onClickHandler={onIncHandler} disabled={props.num === props.maxValue || !props.num }/>
+                <Batton title={'reset'} onClickHandler={onResetHandler} disabled={props.num === props.minValue || !props.num}/>
             </div>
         </div>
     )
