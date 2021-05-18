@@ -36,15 +36,12 @@ function App() {
             setNum(num + 1)
     }
 
-    function setInNumMinValue(minValue: number) {
-        setNum(minValue)
-    }
 
     return (
         <div className="App">
             <SettingsBlock num={num}
-                           setInNumMinValue={setInNumMinValue}
                            increaseInc={increaseInc}
+                           setNum={setNum}
             />
         </div>
     );
