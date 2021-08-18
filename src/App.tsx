@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
-import {SettingsBlock} from "./Component/SettingsBlock";
+import {SettingsBlock} from './Component/SettingsBlock';
+import {Counter} from './Component/Counter';
 
 function App() {
-    const [num, setNum] = useState<number>(0)
-
 
     // useEffect(() => {
     //     let numAsString = localStorage.getItem('num')
@@ -31,18 +30,11 @@ function App() {
     //     localStorage.setItem('maxValue', JSON.stringify(maxValue))
     // }, [num, minValue, maxValue])
 
-    function increaseInc(maxValue: number) {
-        if (num < maxValue)
-            setNum(num + 1)
-    }
-
 
     return (
         <div className="App">
-            <SettingsBlock num={num}
-                           increaseInc={increaseInc}
-                           setNum={setNum}
-            />
+            <SettingsBlock />
+            <Counter />
         </div>
     );
 }

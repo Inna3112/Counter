@@ -1,115 +1,75 @@
-import React, {ChangeEvent, useState} from 'react';
-import {Batton} from "./Batton";
-import {Counter} from "./Counter";
+import React from 'react';
+import {Batton} from './Batton';
+import {InputBlock} from './InputBlock';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootStateType} from '../bll/store';
+import {InitialStateType, setError, setMaxValue, setMinValue, setNum} from '../bll/counterReducer';
 
 
-type PropsType = {
-    num: number
-    increaseInc: (maxValue: number) => void
-    setNum: (num:number) => void
-}
-
-export function SettingsBlock(props: PropsType) {
-    const [minValue, setMinValue] = useState<number>(0)
-    const [maxValue, setMaxValue] = useState<number>(1)
-    const [minError, setMinError] = useState<string>('')
-    const [maxError, setMaxError] = useState<string>('')
-    const [message, setMessage] = useState<string>("Enter values and press 'set'!")
+export function SettingsBlock() {
+    const dispatch = useDispatch()
+    const counter = useSelector<RootStateType, InitialStateType>(state => state.counter)
 
     const onClickHandler = () => {
-        if (maxValue > 0  && minValue === 0){
-            setMaxError('')
-            setMinError('')
-            setMessage('')
+        if (counter.maxValue > 0) {
+            dispatch(setError(false, ''))
         }
-        props.setNum(minValue)
+        dispatch(setNum(counter.minValue))
     }
 
-    const startInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setMinValue(+e.currentTarget.value)
-        if (+e.currentTarget.value < 0) {
-            setMinError('Incorrect value!')
-            setMessage('')
-        }else if (+e.currentTarget.value > maxValue) {
-            setMinError('Incorrect value!')
-            setMaxError('Incorrect value!')
-            setMessage('')
-        }else if (+e.currentTarget.value === maxValue) {
-            setMinError('Incorrect value!')
-            setMaxError('Incorrect value!')
-            setMessage('')
-        } else if (+e.currentTarget.value !== maxValue) {
-            setMinError('')
-            setMaxError('')
-        } else {
-            setMinError('')
+    const startInputChangeHandler = (value: number) => {
+        if (value < 0) {
+            dispatch(setError(true, "Incorrect value"))
+        } else if (value > counter.maxValue) {
+            dispatch(setError(true, "Incorrect value"))
+        } else if (value === counter.maxValue) {
+            dispatch(setError(true, "Incorrect value"))
+        } else if (value !== counter.maxValue) {
+            dispatch(setError(false, ""))
         }
+        dispatch(setMinValue(value))
     }
-    const maxInputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setMaxValue(+e.currentTarget.value)
-        if (+e.currentTarget.value < 0) {
-            setMaxError('Incorrect value!')
-            setMessage('')
-        }else if (+e.currentTarget.value === minValue) {
-            setMaxError('Incorrect value!')
-            setMinError('Incorrect value!')
-            setMessage('')
-        } else if (+e.currentTarget.value !== minValue) {
-            setMaxError('')
-            setMinError('')
+    const maxInputChangeHandler = (value: number) => {
+        if (value < 0) {
+            dispatch(setError(true, "Incorrect value"))
+        } else if (value === counter.minValue) {
+            dispatch(setError(true, "Incorrect value"))
+        } else if (value < counter.minValue) {
+            dispatch(setError(true, "Incorrect value"))
+        } else if (value !== counter.minValue) {
+            dispatch(setError(false, ""))
         }
-        else {
-            setMaxError('')
-        }
+        dispatch(setMaxValue(value))
     }
 
-    const onClickInputHandler = () => {
-        if (maxError !== 'Incorrect value!' && minError !== 'Incorrect value!') {
-            props.setNum(0)
-            setMessage("Enter values and press 'set'!")
-        }
-    }
+    const classNameStart = counter.minValue < 0 || counter.minValue === counter.maxValue || counter.maxValue < counter.minValue ? `${'error'}` : `${'input'}`
+    const disableSet = counter.minValue < 0 || counter.maxValue === counter.minValue || counter.minValue > counter.maxValue
+
     return (
         <div className='wrapper'>
             <div className="counter">
                 <div className={'num'}>
-                    <div>
-                        Start value
-                        <input className={minError ? `${'input'} ${'error'}` : 'input'}
-                               type='number'
-                               value={minValue}
-                               onChange={startInputChangeHandler}
-                               onClick={onClickInputHandler}
-                        />
-                    </div>
-                    <div>
-                        Max value
-                        <input className={maxError ? `${'input'} ${'error'}` : 'input'}
-                               type='number'
-                               value={maxValue}
-                               onChange={maxInputChangeHandler}
-                               onClick={onClickInputHandler}
-                        />
-                    </div>
+                    <InputBlock title={'Start value'}
+                                value={counter.minValue}
+                                error={counter.error}
+                                onChangeHandler={startInputChangeHandler}
+                                className={classNameStart}
+                    />
+                    <InputBlock title={'Max value'}
+                                value={counter.maxValue}
+                                error={counter.error}
+                                onChangeHandler={maxInputChangeHandler}
+                                className={classNameStart}
+                    />
                 </div>
 
                 <div className="buttons">
                     <Batton title={'Set'}
                             onClickHandler={onClickHandler}
-                            disabled={minValue < 0 || maxValue < 0 || minValue >= maxValue}
-                            />
+                            disabled={disableSet}
+                    />
                 </div>
             </div>
-
-            <Counter num={props.num}
-                     message={message}
-                     increaseInc={props.increaseInc}
-                     setNum={props.setNum}
-                     maxValue={maxValue}
-                     minValue={minValue}
-                     minError={minError}
-                     maxError={maxError}
-            />
         </div>
     );
 }

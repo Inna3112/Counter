@@ -1,45 +1,40 @@
-import React, {useState} from 'react';
-import {Batton} from "./Batton";
+import React from 'react';
+import {Batton} from './Batton';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootStateType} from '../bll/store';
+import {increseIncremet, InitialStateType, setNum} from '../bll/counterReducer';
 
-type PropsType = {
-    num: number
-    message: string
-    maxValue: number
-    minValue: number
-    minError: string
-    maxError: string
-    increaseInc: (maxValue: number) => void
-    setNum: (num: number) => void
-}
+type PropsType = {}
 
 export function Counter(props: PropsType) {
-    const [display, setDisplay] = useState(false)
+    const dispatch = useDispatch()
+    const counter = useSelector<RootStateType, InitialStateType>(state => state.counter)
 
-    const onIncHandler = () => props.increaseInc(props.maxValue)
-    const onResetHandler = () => props.setNum(props.minValue)
-    const changeDisplay = () => {
-        if (display){
-            return props.message
-        } else {
-            return props.num
-        }
-    }
+    const onIncHandler = () => dispatch(increseIncremet(counter.num + 1))
+    const onResetHandler = () => dispatch(setNum(counter.minValue))
+
+    const incDisabled = counter.num === counter.maxValue || counter.minValue >= counter.maxValue || counter.error
+    const resetDisabled = counter.num === counter.minValue || counter.minValue >= counter.maxValue || counter.error
 
     return (
         <div className="counter">
-            <div className={props.num === props.maxValue || props.minError || props.maxError
-                ? `${'num'} ${'hotMessage'}` : 'num'}>
+            <div
+                className={counter.num === counter.maxValue || counter.error
+                ? `${'num'} ${'hotMessage'}` : 'num'} >
 
-                { props.num || props.message || props.minError || props.maxError }
+                { counter.error ? counter.errorMessage : counter.num}
 
             </div>
-            {/*value: - {props.num}*/}
-            {/*message: {props.message}*/}
-            {/*minError: -{props.minError}*/}
-            {/*maxError: -{props.maxError}*/}
+            {/*value: - {counter.num}*/}
+            {/*message: {counter.errorMessage}*/}
+
             <div className="buttons">
-                <Batton title={'inc'} onClickHandler={onIncHandler} disabled={props.num === props.maxValue || !props.num }/>
-                <Batton title={'reset'} onClickHandler={onResetHandler} disabled={props.num === props.minValue || !props.num}/>
+                <Batton title={'inc'}
+                        onClickHandler={onIncHandler}
+                        disabled={incDisabled}/>
+                <Batton title={'reset'}
+                        onClickHandler={onResetHandler}
+                        disabled={resetDisabled}/>
             </div>
         </div>
     )
