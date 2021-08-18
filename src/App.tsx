@@ -33,8 +33,10 @@ function App() {
 
     return (
         <div className="App">
-            <SettingsBlock />
-            <Counter />
+            <div className="wrapper">
+                <SettingsBlock/>
+                <Counter/>
+            </div>
         </div>
     );
 }

@@ -46,29 +46,26 @@ export function SettingsBlock() {
     const disableSet = counter.minValue < 0 || counter.maxValue === counter.minValue || counter.minValue > counter.maxValue
 
     return (
-        <div className='wrapper'>
-            <div className="counter">
-                <div className={'num'}>
-                    <InputBlock title={'Start value'}
-                                value={counter.minValue}
-                                error={counter.error}
-                                onChangeHandler={startInputChangeHandler}
-                                className={classNameStart}
-                    />
-                    <InputBlock title={'Max value'}
-                                value={counter.maxValue}
-                                error={counter.error}
-                                onChangeHandler={maxInputChangeHandler}
-                                className={classNameStart}
-                    />
-                </div>
-
-                <div className="buttons">
-                    <Batton title={'Set'}
-                            onClickHandler={onClickHandler}
-                            disabled={disableSet}
-                    />
-                </div>
+        <div className="settings">
+            <div className={'num'}>
+                <InputBlock title={'Start value'}
+                            value={counter.minValue}
+                            error={counter.error}
+                            onChangeHandler={startInputChangeHandler}
+                            className={classNameStart}
+                />
+                <InputBlock title={'Max value'}
+                            value={counter.maxValue}
+                            error={counter.error}
+                            onChangeHandler={maxInputChangeHandler}
+                            className={classNameStart}
+                />
+            </div>
+            <div className="buttons">
+                <Batton title={'Set'}
+                        onClickHandler={onClickHandler}
+                        disabled={disableSet}
+                />
             </div>
         </div>
     );

@@ -17,7 +17,7 @@ export function Counter(props: PropsType) {
     const resetDisabled = counter.num === counter.minValue || counter.minValue >= counter.maxValue || counter.error
 
     return (
-        <div className="counter">
+        <div className="settings">
             <div
                 className={counter.num === counter.maxValue || counter.error
                 ? `${'num'} ${'hotMessage'}` : 'num'} >

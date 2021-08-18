@@ -9,7 +9,7 @@
     margin: 0 auto;
 }
 
-.counter {
+.settings {
     border: 2px solid #006D80;
     width: 300px;
     height: 200px;
@@ -35,7 +35,8 @@
 
 .buttons {
     display: flex;
-    justify-items: center;
+    justify-content: center;
+    align-items: center;
     box-sizing: border-box;
     padding: 5px;
     border-radius: 5px;
@@ -50,7 +51,6 @@
 
 .hotMessage {
     font-size: 16pt;
-    font-weight: bold;
     color: red;
 }
 
